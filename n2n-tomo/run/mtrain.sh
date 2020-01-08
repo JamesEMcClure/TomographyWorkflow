@@ -1,0 +1,14 @@
+python -m memory_profiler ./n2n-tomo/train.py \
+  --data ./data/input \
+  --axis 0 \
+  --train-fraction 0.5 \
+  --valid-fraction 0.2 \
+  --train-number 256 \
+  --valid-number 64 \
+  --batch-size 2 \
+  --loss l2 \
+  --cuda \
+  --plot-stats \
+  --ckpt-save-path ./ckpts \
+  --ckpt-overwrite \
+  --report-interval 16
