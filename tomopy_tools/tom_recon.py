@@ -14,6 +14,15 @@ import numpy as np
 import tomopy as tp
 import dxchange.reader as dxreader
 from netCDF4 import Dataset
+import argparse
+
+args = argparse.ArgumentParser()
+args.add_argument('--fname', default=None, type=str,
+                  help='name string to projection data')
+args.add_argument('--nstep', default=1, type=int,
+                  help='step size when going through the array of projections')
+args.add_argument('--noffset', default=0, type=int,
+                  help='offset at which this selection starts')
 
 def read_aps_13bm(fname, format, proj=None, sino=None):
     """
@@ -70,18 +79,10 @@ def read_aps_13bm(fname, format, proj=None, sino=None):
 
 if __name__ == '__main__':
 
-    # take every step-th projection
-    if len(sys.argv) > 1:
-        step = int(sys.argv[1])
-    else:
-        step = 1
-    if len(sys.argv) > 2:
-        offset = int(sys.argv[2])
-    else:
-        offset = 0
-
-    ## Set path (without file suffix) to the micro-CT data to reconstruct.
-    fname = './data/bentonite/Bent2_under_op__E_'
+    args = args.parse_args()
+    fname = args.fname     
+    step = args.nstep
+    offset = args.noffset
 
     ## Import Data.
     proj, flat, dark, theta = read_aps_13bm(fname, format = 'netcdf4')
