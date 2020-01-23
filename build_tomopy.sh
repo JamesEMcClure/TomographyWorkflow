@@ -65,6 +65,8 @@ make
 make install
 #cd ../../../..
 cd $CWD
+# Install ipython for easier development and testing
+conda install -y ipython
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Finally install Tomopy from custom fork
 git clone https://github.com/ssomnath/tomopy.git ${PACK_DIR}/tomopy
