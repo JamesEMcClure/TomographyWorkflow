@@ -65,3 +65,9 @@ make
 make install
 #cd ../../../..
 cd $CWD
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Finally install Tomopy from custom fork
+git clone https://github.com/ssomnath/tomopy.git ${PACK_DIR}/tomopy
+cd ${PACK_DIR}/tomopy
+# python setup.py install
+cd $CWD
