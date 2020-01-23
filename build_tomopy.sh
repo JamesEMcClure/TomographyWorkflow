@@ -39,7 +39,6 @@ pip install tifffile scikit-build cftime pyfftw
 git clone https://github.com/data-exchange/dxchange.git ${PACK_DIR}/dxchange
 cd ${PACK_DIR}/dxchange
 python setup.py install
-# cd ../..
 cd $CWD
 # Follow instructions from here - https://betterscientificsoftware.github.io/python-for-hpc/summit-mpi4py-note/ to install mpi4py from source
 CC=mpicc 
@@ -52,7 +51,6 @@ conda install -y astropy netcdf4 numexpr
 git clone https://github.com/data-exchange/dxfile ${PACK_DIR}/DXfile
 cd ${PACK_DIR}/DXfile/
 python setup.py install
-# cd ../..
 cd $CWD
 # unable to find easy and simple installers for edffile, spefile, olefile
 # Maybe these packages are not required after all
@@ -65,7 +63,6 @@ cd ${PACK_DIR}/astra-toolbox/build/linux/
 ./configure --with-cuda=/sw/summit/cuda/10.1.168 --with-python --with-install-type=module
 make
 make install
-#cd ../../../..
 cd $CWD
 # Install ipython for easier development and testing
 conda install -y ipython
