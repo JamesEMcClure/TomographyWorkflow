@@ -9,6 +9,8 @@ module load netcdf
 # The following two modules are needed for astra toolbox - GPU reconstructions
 module load boost
 module load cuda
+# Load the cmake module necessary for timemory and tomopy
+module load cmake
 # Finally, load and use the IBM WML CE module as the base
 module load ibm-wml-ce/1.6.2-0
 echo "Loaded all necessary modules"
