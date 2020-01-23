@@ -45,7 +45,7 @@ MPICC=mpicc
 pip install mpi4py --no-binary mpi4py
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Install optional dependencies:
-conda install -y astropy netcdf4
+conda install -y astropy netcdf4 numexpr
 # dxfile cannot be installed via pip or conda. Install from source:
 git clone https://github.com/data-exchange/dxfile ${PACK_DIR}/DXfile
 cd ${PACK_DIR}/DXfile/
