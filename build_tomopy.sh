@@ -70,6 +70,7 @@ cd $CWD
 conda install -y ipython
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Finally install Tomopy from custom fork
+# Instructions for GPU build - https://tomopy.readthedocs.io/en/latest/gpu.html
 git clone https://github.com/ssomnath/tomopy.git ${PACK_DIR}/tomopy
 cd ${PACK_DIR}/tomopy
 # python setup.py install
