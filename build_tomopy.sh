@@ -1,18 +1,17 @@
 #!/bin/bash
 # run as "source build_tomopy.sh"
 # First swap out IBM's XL compiler with GCC
-# Use a later version of gcc in order to load gperftools
-module load gcc/8.1.1
+module load gcc/6.4.0
 # Next load the fftw module:
-module load fftw
+module load fftw/3.3.8
 # This module will be necessary to install the netcdf4 python package later
-module load netcdf
+module load netcdf/4.6.2
 # The following two modules are needed for astra toolbox - GPU reconstructions
-module load boost
-module load cuda
+module load boost/1.66.0
+module load cuda/10.1.168
 # Load additional modules necessary for timemory and tomopy
 module load cmake
-module load gperftools
+# module load gperftools
 # Finally, load and use the IBM WML CE module as the base
 module load ibm-wml-ce/1.6.2-0
 echo "Loaded all necessary modules"
