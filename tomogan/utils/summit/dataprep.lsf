@@ -1,0 +1,24 @@
+#!/bin/bash -l
+#BSUB -P stf011
+#BSUB -J test
+#BSUB -o logs.o%J
+#BSUB -W 01:00
+#BSUB -nnodes 1
+#BSUB -alloc_flags "smt4 nvme"
+#BSUB -q batch
+
+PYTHON="$WORLDWORK/geo136/tomopy_example/anaconda3"
+export PATH=$PYTHON/bin:$PATH
+export PYTHONIOENCODING="utf8"
+
+input="./MERE_RA_Ben_HiRes_2880proj_20acc_5mm_C/tomo_R_nc/"
+output="./2880proj_20acc"
+jsrun -n1 -a1 -c42 -r1 python ../data_preparation.py --data-dir $input  --output $output 
+
+
+input="../MERE_RA_Ben_LowRes_540proj_1acc_5mm_C/tomo_R_nc/"
+output="./540proj_1acc"
+jsrun -n1 -a1 -c42 -r1 python ../data_preparation.py --data-dir $input  --output $output
+
+
+
