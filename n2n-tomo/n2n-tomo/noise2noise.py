@@ -49,7 +49,9 @@ class Noise2Noise(object):
 
         # CUDA support
         self.use_cuda = torch.cuda.is_available() and self.p.cuda
-        if self.use_cuda:
+        if self.use_cuda: 
+            if torch.cuda.device_count() > 1:
+                self.model = nn.DataParallel(self.model)
             self.model = self.model.cuda()
             if self.trainable:
                 self.loss = self.loss.cuda()
@@ -90,7 +92,10 @@ class Noise2Noise(object):
             valid_loss = stats['valid_loss'][epoch]
             fname_unet = '{}/n2n-epoch{}-{:>1.5f}.pt'.format(self.ckpt_dir, epoch + 1, valid_loss)
         print('Saving checkpoint to: {}\n'.format(fname_unet))
-        torch.save(self.model.state_dict(), fname_unet)
+        if torch.cuda.device_count() > 1:
+            torch.save(self.model.module.state_dict(), fname_unet)
+        else:
+            torch.save(self.model.state_dict(), fname_unet)
 
         # Save stats to JSON
         fname_dict = '{}/n2n-stats.json'.format(self.ckpt_dir)

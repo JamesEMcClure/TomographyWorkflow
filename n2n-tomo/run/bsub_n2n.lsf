@@ -1,0 +1,54 @@
+#!/bin/bash
+#BSUB -P geo136
+#BSUB -W 2:00
+#BSUB -nnodes 1
+#BSUB -J n2n 
+#BSUB -o n2n.o%J
+#BSUB -e n2n.e%J
+#BSUB -alloc_flags SMT4
+
+### modules ###
+module load ibm-wml-ce 
+NODES=$(cat ${LSB_DJOB_HOSTFILE} | sort | uniq | grep -v login | grep -v batch | wc -l)
+
+ln -s ../../tomopy_tools/sort_rec_step4_offset3.volume sort_rec_A.nc
+ln -s ../../tomopy_tools/sort_rec_step1_offset0.volume sort_rec_B.nc
+DATADIR="/gpfs/alpine/world-shared/geo136/tomopy_example/TomographyWorkflow/n2n-tomo/run"
+LOG=log.n2n 
+
+#train 
+jsrun -n${NODES} -a1 -c42 -g6 -r1 --bind=proportional-packed:7 --launch_distribution=packed  python ../n2n-tomo/train.py \
+  --data $DATADIR \
+  --axis 0 \
+  --n-width 16 \
+  --n-height 16 \
+  --crop-size 256 \
+  --n-crops 16 \
+  --train-fraction 0.5 \
+  --valid-fraction 0.2 \
+  --n-epochs 10 \
+  --train-number 512 \
+  --valid-number 256 \
+  --batch-size 64 \
+  --loss l2 \
+  --seed 42 \
+  --cuda \
+  --plot-stats \
+  --ckpt-save-path ./ckpts \
+  --report-interval 16
+
+ln -s $(pwd)/ckpts/*/n2n-epoch10-0.00000.pt ckpts/n2n-tomo.pt
+
+#compose 
+jsrun -n1 -a1 -c42 -g1 -r1 python ../n2n-tomo/compose.py \
+  --data $DATADIR \
+  --load-ckpt ./ckpts/n2n-tomo.pt \
+  --axis 0 \
+  --crop-size 256 \
+  --n-width 16 \
+  --n-height 16 \
+  --batch-size 128 \
+  --seed 42 \
+  --cuda \
+  --show-output 2
+
