@@ -1,0 +1,41 @@
+#!/bin/bash
+
+#BSUB -P geo136
+#BSUB -W 2:00
+#BSUB -nnodes 1
+
+#BSUB -J tom_recon
+#BSUB -o tom_recon.o%J
+#BSUB -e tom_recon.e%J
+#BSUB -alloc_flags SMT1
+
+### modules ###
+module load gcc/6.4.0
+module load fftw/3.3.8
+
+### python ###
+PYTHON="$WORLDWORK/geo136/tomopy_example/anaconda3"
+export PATH=$PYTHON/bin:$PATH
+export PYTHONIOENCODING="utf8"
+export OMP_NUM_THREADS=4 
+export NUMEXPR_MAX_THREADS=4
+LOG=../tomo_recon.log
+
+DATADIR=Bent2_under_op_
+cd $DATADIR
+FILES=$(ls *.nc)
+LIST=$(for i in $FILES; do j=${i::-4}; echo $j; done | uniq)
+REPOSITORY=/gpfs/alpine/scratch/mcclurej/geo136/TomographyWorkflow
+
+for TARGET in $LIST; do 
+   echo "Reconstructing $TARGET"
+   EXEC="${PYTHON}/bin/python -u ${REPOSITORY}/tomopy_tools/tom_recon.py --nstep 4 --noffset 3 --fname ${TARGET}"
+   jsrun -n 1 -a 1 -c 4 -g 1 -r 1 -bpacked:4 ${EXEC} > ${LOG}
+done
+
+#TARGET="./Bent2_under_op__E_"
+
+#echo $NUMEXPR_MAX_THREADS
+
+#cp my_output_file /ccs/proj/abc123/Output.123
+
