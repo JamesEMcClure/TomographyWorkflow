@@ -1,4 +1,3 @@
-
 """
 TomoPy example script to reconstruct the APS 13-BM tomography
 data as original netcdf files. To use, change fname to just
@@ -72,8 +71,8 @@ def read_aps_13bm(fname, format, proj=None, sino=None):
         dark = flat*0+dark
 
         #theta = np.linspace(0.0, np.pi, tomo.shape[0])
-
-        theta = dxreader.read_netcdf4(files[1], 'Attr_SampleOmega')[:]/180.0*np.pi
+        #theta = dxreader.read_netcdf4(files[1], 'Attr_SampleOmega')[:]/180.0*np.pi
+        theta = tp.angles(tomo.shape[0])
 
     return tomo, flat, dark, theta
 
@@ -114,7 +113,8 @@ if __name__ == '__main__':
  
     ## Writing data in netCDF3 .volume.
     #file_name = 'sort_rec_step' + str(step) + '_offset' + str(offset) + '.volume'
-    file_name = f'sort_rec_step{step}_offset{offset}.volume'
+    #file_name = f'sort_rec_step{step}_offset{offset}.volume'
+    file_name = fname + 'recon.volume'
     ncfile = Dataset(file_name, 'w', format = 'NETCDF3_64BIT', clobber = True)
     NX = ncfile.createDimension('NX', rec.shape[2])
     NY = ncfile.createDimension('NY', rec.shape[1])
