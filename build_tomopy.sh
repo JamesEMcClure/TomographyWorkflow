@@ -26,9 +26,8 @@ CONDA_DIR=$CWD/$CONDA_NAME
 PACK_DIR=$CWD/$PACK_DIR
 echo "Conda environment will be located at: $CONDA_DIR"
 echo "Temporary directory for installing dependency packages will be located at $PACK_DIR"
-echo "These directories will be removed if they already exist"
-if [ -d "$CONDA_DIR" ]; then rm -rf $CONDA_DIR; fi
-if [ -d "$PACK_DIR" ]; then rm -rf $PACK_DIR; fi
+if [ -d "$CONDA_DIR" ]; then echo "$CONDA_DIR already exists. Removing"; rm -rf $CONDA_DIR; fi
+if [ -d "$PACK_DIR" ]; then echo "$PACK_DIR already exists. Removing"; rm -rf $PACK_DIR; fi
 mkdir $PACK_DIR
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 echo ""
@@ -37,6 +36,8 @@ echo ""
 conda create --prefix $CONDA_DIR --clone ibm-wml-ce-1.6.2-0
 # Activate clone:
 conda activate $CONDA_DIR
+# Update conda if necessary:
+conda update -n base -c defaults conda
 # Before installing packages via conda make sure to append channels:
 # General:
 conda config --append channels conda-forge
@@ -45,6 +46,8 @@ conda config --prepend channels \
 https://public.dhe.ibm.com/ibmdl/export/pub/software/server/ibm-ai/conda/
 # install cython - available via conda for power pc: https://anaconda.org/anaconda/cython
 # Doing this early allows pip installation of other packages
+# cython on conda forge works for linux-ppc64le
+# https://anaconda.org/conda-forge/cython/
 conda install -y cython
 # pywavelets came with the ibm module. No need to install
 # install simple packages via pip:
