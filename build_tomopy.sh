@@ -99,3 +99,5 @@ git clone https://github.com/ssomnath/tomopy.git ${PACK_DIR}/tomopy
 cd ${PACK_DIR}/tomopy
 python setup.py install
 cd $CWD
+# Remove temporary packages directory
+rm -rf $PACK_DIR
