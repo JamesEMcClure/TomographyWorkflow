@@ -82,6 +82,7 @@ cd $CWD
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Tomopy at talks about astra toolbox for GPU reconstruction
 # Install ASTRA Toolbox based on instructions from here - https://www.astra-toolbox.com/docs/install.html#linux-from-source
+# This takes a LONG time to build
 git clone https://github.com/astra-toolbox/astra-toolbox.git ${PACK_DIR}/astra-toolbox
 cd ${PACK_DIR}/astra-toolbox/build/linux/
 ./autogen.sh   # when building a git version
