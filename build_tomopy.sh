@@ -24,12 +24,25 @@ CONDA_NAME='mcclure-conda'
 PACK_DIR='packages'
 CONDA_DIR=$CWD/$CONDA_NAME
 PACK_DIR=$CWD/$PACK_DIR
+echo "Conda environment will be located at: $CONDA_DIR"
+echo "Temporary directory for installing dependency packages will be located at $PACK_DIR"
+echo "These directories will be removed if they already exist"
+if [ -d "$CONDA_DIR" ]; then rm -rf $CONDA_DIR; fi
+if [ -d "$PACK_DIR" ]; then rm -rf $PACK_DIR; fi
 mkdir $PACK_DIR
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo ""
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Now clone the environment
 conda create --prefix $CONDA_DIR --clone ibm-wml-ce-1.6.2-0
 # Activate clone:
 conda activate $CONDA_DIR
+# Before installing packages via conda make sure to append channels:
+# General:
+conda config --append channels conda-forge
+# IBM specific:
+conda config --prepend channels \
+https://public.dhe.ibm.com/ibmdl/export/pub/software/server/ibm-ai/conda/
 # install cython - available via conda for power pc: https://anaconda.org/anaconda/cython
 # Doing this early allows pip installation of other packages
 conda install -y cython
