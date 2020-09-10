@@ -37,7 +37,8 @@ conda create --prefix $CONDA_DIR --clone ibm-wml-ce-1.6.2-0
 # Activate clone:
 conda activate $CONDA_DIR
 # Update conda if necessary:
-conda update -n base -c defaults conda
+# Skip since user does not have sufficient priveleges
+# conda update -n base -c defaults conda -y
 # Before installing packages via conda make sure to append channels:
 # General:
 conda config --append channels conda-forge
@@ -49,9 +50,14 @@ https://public.dhe.ibm.com/ibmdl/export/pub/software/server/ibm-ai/conda/
 # cython on conda forge works for linux-ppc64le
 # https://anaconda.org/conda-forge/cython/
 conda install -y cython
+# Install ipython for easier development and testing
+conda install -y ipython
 # pywavelets came with the ibm module. No need to install
+# pyfftw does not come with a ppc installer in conda - https://anaconda.org/search?q=platform%3Alinux-ppc64le+pyfftw
+# Not sure if pip will pick up on Summit's module:
+pip install pyfftw
 # install simple packages via pip:
-pip install tifffile scikit-build cftime pyfftw
+pip install tifffile scikit-build cftime
 # dxchange does not have a pip installer nor power-pc builds on conda so install from source:
 git clone https://github.com/data-exchange/dxchange.git ${PACK_DIR}/dxchange
 cd ${PACK_DIR}/dxchange
@@ -62,7 +68,9 @@ CC=mpicc
 MPICC=mpicc 
 pip install mpi4py --no-binary mpi4py
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Install optional dependencies:
+# Install other dependencies:
+# All these have ppc64le builds
+# Note - numexpr has been a pain point in the past. Not sure if this is hte appropriate way to build
 conda install -y astropy netcdf4 numexpr
 # dxfile cannot be installed via pip or conda. Install from source:
 git clone https://github.com/data-exchange/dxfile ${PACK_DIR}/DXfile
@@ -81,8 +89,6 @@ cd ${PACK_DIR}/astra-toolbox/build/linux/
 make
 make install
 cd $CWD
-# Install ipython for easier development and testing
-conda install -y ipython
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Finally install Tomopy from custom fork
 # Instructions for GPU build - https://tomopy.readthedocs.io/en/latest/gpu.html
