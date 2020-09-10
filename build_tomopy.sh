@@ -52,6 +52,8 @@ https://public.dhe.ibm.com/ibmdl/export/pub/software/server/ibm-ai/conda/
 conda install -y cython
 # Install ipython for easier development and testing
 conda install -y ipython
+# Install jupyterlab:
+pip install jupyterlab
 # pywavelets came with the ibm module. No need to install
 # pyfftw does not come with a ppc installer in conda - https://anaconda.org/search?q=platform%3Alinux-ppc64le+pyfftw
 # Not sure if pip will pick up on Summit's module:
@@ -95,5 +97,5 @@ cd $CWD
 # Instructions for GPU build - https://tomopy.readthedocs.io/en/latest/gpu.html
 git clone https://github.com/ssomnath/tomopy.git ${PACK_DIR}/tomopy
 cd ${PACK_DIR}/tomopy
-# python setup.py install
+python setup.py install
 cd $CWD
