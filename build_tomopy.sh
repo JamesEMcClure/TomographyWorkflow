@@ -49,9 +49,8 @@ https://public.dhe.ibm.com/ibmdl/export/pub/software/server/ibm-ai/conda/
 # Doing this early allows pip installation of other packages
 # cython on conda forge works for linux-ppc64le
 # https://anaconda.org/conda-forge/cython/
-conda install -y cython
 # Install ipython for easier development and testing
-conda install -y ipython
+conda install -y cython ipython
 # Install jupyterlab:
 pip install jupyterlab
 # pywavelets came with the ibm module. No need to install
@@ -60,6 +59,8 @@ pip install jupyterlab
 pip install pyfftw
 # install simple packages via pip:
 pip install tifffile scikit-build cftime
+# Install two file reading packages (noarch available through conda forge)
+conda install -y spefile edffile
 # dxchange does not have a pip installer nor power-pc builds on conda so install from source:
 git clone https://github.com/data-exchange/dxchange.git ${PACK_DIR}/dxchange
 cd ${PACK_DIR}/dxchange
