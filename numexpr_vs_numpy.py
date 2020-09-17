@@ -1,6 +1,8 @@
+import os
 import numpy as np
 import numexpr as ne
 from time import time
+from multiprocessing import cpu_count
 import matplotlib.pyplot as plt
 
 def np_func_1(a, b):
@@ -29,7 +31,16 @@ def get_mean_time(func, a, b, loops=100):
     
 
 if __name__ == '__main__':
-    arr_size = int(1e9)
+    arr_size = int(1e6)
+    
+    size_str = '{:.1e}'.format(arr_size).replace('0','').replace('+','').replace('.','').upper()
+        
+    print('Working with array size: {:.1e}'.format(arr_size))
+    print('Number of CPU cores available: {}'.format(cpu_count()))
+    
+    # os.environ["NUMEXPR_MAX_THREADS"] = "168"
+    # os.environ["OMP_NUM_THREADS"] = "8"
+    
     a = np.random.rand(arr_size)
     b = np.random.rand(arr_size)
     
@@ -56,8 +67,9 @@ if __name__ == '__main__':
     
     fig, axis = plt.subplots()
     axis.plot(threads_list, mean_times, 'o-')
-    axis.set_title('numexpr - 2*a + b**10: {:.1e} points'.format(arr_size))
+    axis.set_title('numexpr - 2*a + b**10: {} points'.format(size_str))
     axis.set_xlabel('Num CPU threads')
     axis.set_ylabel('Mean execution time (msec)')
     fig.tight_layout()
-    fig.savefig('numexpr_vs_threads.png', dpi=300)
+    fig.savefig('numexpr_vs_threads_' + size_str + '.png', dpi=300)
+    
