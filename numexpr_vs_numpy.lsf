@@ -24,6 +24,8 @@ conda activate /gpfs/alpine/stf011/world-shared/mcclure/mcclure-conda
 # PYTHON="/gpfs/alpine/stf011/world-shared/mcclure/mcclure-conda"
 # export LD_LIBRARY_PATH=${PYTHON}/lib:$LD_LIBRARY_PATH
 export PYTHONIOENCODING="utf8"
+export OMP_NUM_THREADS=4
+export NUMEXPR_MAX_THREADS=168
 
 cd /gpfs/alpine/stf011/world-shared/mcclure/lukas/scripts
 
