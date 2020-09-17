@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+#BSUB -P STF011
+#BSUB -W 0:05
+#BSUB -alloc_flags "smt4"
+#BSUB -nnodes 1
+#BSUB -J numexpr_numpy
+#BSUB -o numexpr_numpy.o%J
+#BSUB -e numexpr_numpy.e%J
+
+PROJ_ID=stf011
+
+module load gcc/6.4.0 
+module load fftw/3.3.8 
+module load netcdf/4.6.2 
+module load boost/1.66.0 
+module load cuda/10.1.243 
+module load cmake 
+module load ibm-wml-ce/1.6.2-0 
+
+conda activate /gpfs/alpine/stf011/world-shared/mcclure/mcclure-conda
+
+### python ###
+# PYTHON="/gpfs/alpine/stf011/world-shared/mcclure/mcclure-conda"
+# export LD_LIBRARY_PATH=${PYTHON}/lib:$LD_LIBRARY_PATH
+export PYTHONIOENCODING="utf8"
+
+cd /gpfs/alpine/stf011/world-shared/mcclure/lukas/scripts
+
+jsrun -n 1 -r 1 -a 1 -c 42 --smpiargs="off" python numexpr_vs_numpy.py
