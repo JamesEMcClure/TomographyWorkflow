@@ -1,0 +1,32 @@
+Loaded data from GPFS to memory in 3.17 sec
+proj : uint16 (900, 1200, 1920) : 3.86 GB
+flat : uint16 (20, 1200, 1920) : 0.09 GB
+dark : float64 (20, 1200, 1920) : 0.34 GB
+theta : float64 (900,) : 0.00 GB
+
+Normalizing now...
+Completed normalization in 7.12 sec
+Projection after normalization:
+float32 (900, 1200, 1920) : 7.72 GB
+Flat-field correction performed in 5.46 sec
+Projection after flat-field correction:
+float32 (900, 1200, 1920) : 7.72 GB
+Removed stripes in 361.18 sec
+Projection after stripe removal:
+float32 (900, 1200, 1920) : 7.72 GB
+Rotated to find center in 33.91 sec
+After rotation center:
+float64 () : 0.00 GB
+Minus log completed in 38.64 sec
+float32 (900, 1200, 1920) : 7.72 GB
+Reconstructing 42 slice groups with 42 master threads...
+Reconstruction completed in 123.64 sec
+float32 (1200, 1920, 1920) : 16.48 GB
+NaNs removed from reconstruction in 9.91 sec
+float32 (1200, 1920, 1920) : 16.48 GB
+Writing results to NetCDF:
+Wrote to NetCDF in 29.95 sec
+Total execution time: 10.22 min
+
+Warning: OMP_NUM_THREADS=42 is greater than available PU's
+Error.  nthreads cannot be larger than environment variable "NUMEXPR_MAX_THREADS" (42)Error.  nthreads must be a positive integerError.  nthreads cannot be larger than environment variable "NUMEXPR_MAX_THREADS" (42)Error.  nthreads must be a positive integer
