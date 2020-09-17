@@ -1,6 +1,7 @@
 import numpy as np
 import numexpr as ne
 from time import time
+import matplotlib.pyplot as plt
 
 def np_func_1(a, b):
     t0 = time()
@@ -28,8 +29,9 @@ def get_mean_time(func, a, b, loops=100):
     
 
 if __name__ == '__main__':
-    a = np.random.rand(int(1e6))
-    b = np.random.rand(int(1e6))
+    arr_size = int(1e9)
+    a = np.random.rand(arr_size)
+    b = np.random.rand(arr_size)
     
     tp_1 = get_mean_time(np_func_1, a, b, loops=10)
     print('Numpy: 2*a + 3*b: {:.2f} +/- {:.2f} msec'.format(*tp_1))
@@ -43,10 +45,19 @@ if __name__ == '__main__':
     te_2 = get_mean_time(ne_func_2, a, b, loops=100)
     print('Numexpr: 2*a + b**10: {:.2f} +/- {:.2f} msec'.format(*te_2))
     
+    threads_list = range(1, 64)
     mean_times = list()
-    for n_threads in range(1, 64):
+    for n_threads in threads_list:
         ne.set_num_threads(n_threads)
         mean_times.append(get_mean_time(ne_func_2, a, b, loops=100)[0])
         
     print('Numexpr: 2*a + b**10: for cores: 1-64')
     print(mean_times)
+    
+    fig, axis = plt.subplots()
+    axis.plot(threads_list, mean_times, 'o-')
+    axis.set_title('numexpr - 2*a + b**10: {:.1e} points'.format(arr_size))
+    axis.set_xlabel('Num CPU threads')
+    axis.set_ylabel('Mean execution time (msec)')
+    fig.tight_layout()
+    fig.savefig('numexpr_vs_threads.png', dpi=300)
