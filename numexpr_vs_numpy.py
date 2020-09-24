@@ -103,7 +103,7 @@ def vary_used_threads(arr_size, func=ne_func_2, threads_list=None, show_plots=Tr
     return threads_list, mean_times
 
 
-def vary_omp_num_threads(thread_list, show_plot=True):
+def vary_omp_num_threads(thread_list, arr_size=None, show_plots=True):
     
     tp_1 = list()
     te_1 = list()
@@ -113,15 +113,15 @@ def vary_omp_num_threads(thread_list, show_plot=True):
     for this_threads in thread_list:
         os.environ['OMP_NUM_THREADS'] = str(this_threads)
         
-        ret_vals = bench_ne_np(arr_size=None, show_context=True, show_results=True)
+        ret_vals = bench_ne_np(arr_size=arr_size, show_context=True, show_results=True)
         tp_1.append(ret_vals[0])
         te_1.append(ret_vals[1])
         tp_2.append(ret_vals[2])
         te_2.append(ret_vals[3])
         print('\n'*2)
     
-    if show_plot:
-        fig, axes = plt.subplots(nrows=2, ncols=2, )
+    if show_plots:
+        fig, axes = plt.subplots(nrows=2, ncols=2, sharex=True)
         for axis, y_vals, label in zip(axes.flat, [tp_1, te_1, tp_2, te_2],
                                        ['numpy 2*a + 3*b', 'numexpr 2*a + 3*b', 'numpy 2*a + b**10', 'numexpr 2*a + b**10']):
             print(label)
@@ -133,7 +133,7 @@ def vary_omp_num_threads(thread_list, show_plot=True):
             axis.set_yscale('log')
             axis.set_xscale('log')
             axis.set_xlabel('OMP NUM THREADS')
-            axis.set_ylabel('Execution time (sec)')
+            axis.set_ylabel('Execution time (msec)')
             axis.set_title(label)
             #axis.legend()
         fig.tight_layout()
@@ -142,6 +142,6 @@ def vary_omp_num_threads(thread_list, show_plot=True):
 
 if __name__ == '__main__':
     os.environ['NUMEXPR_MAX_THREADS'] = str(168) 
-    vary_omp_num_threads([1, 2, 4 ,8, 16, 32, 64, 128])
+    vary_omp_num_threads([1, 2, 4 ,8, 16, 32, 64, 128], arr_size=int(1e7), show_plots=True)
     os.environ['OMP_NUM_THREADS'] = str(128)
-    vary_used_threads(1e6, func=ne_func_2, threads_list=[1, 2, 4 ,8, 16, 32, 64, 128], show_plots=True)
+    vary_used_threads(int(1e7), func=ne_func_2, threads_list=[1, 2, 4 ,8, 16, 32, 64, 128], show_plots=True)
